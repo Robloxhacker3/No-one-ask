@@ -1,0 +1,178 @@
+-- Obfuscate and randomize element names
+local genRandomName = function()
+    local chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    local name = ""
+    for i = 1, 10 do
+        local randomIndex = math.random(1, #chars)
+        name = name .. string.sub(chars, randomIndex, randomIndex)
+    end
+    return name
+end
+
+local guiName = genRandomName()
+local frameName = genRandomName()
+local textBoxName = genRandomName()
+local injectButtonName = genRandomName()
+local executeButtonName = genRandomName()
+local clearButtonName = genRandomName()
+local titleName = genRandomName()
+local pcButtonName = genRandomName()
+local toggleButtonLeftName = genRandomName()
+local draggableCircleName = genRandomName()
+
+-- Create GUI Elements with Random Names
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextBox = Instance.new("TextBox")
+local InjectButton = Instance.new("TextButton")
+local ExecuteButton = Instance.new("TextButton")
+local ClearButton = Instance.new("TextButton")
+local Title = Instance.new("TextLabel")
+local PCButton = Instance.new("TextButton")
+local ToggleButtonLeft = Instance.new("TextButton")
+local DraggableCircle = Instance.new("Frame")
+
+-- Assign Random Names to the Elements
+ScreenGui.Name = guiName
+Frame.Name = frameName
+TextBox.Name = textBoxName
+InjectButton.Name = injectButtonName
+ExecuteButton.Name = executeButtonName
+ClearButton.Name = clearButtonName
+Title.Name = titleName
+PCButton.Name = pcButtonName
+ToggleButtonLeft.Name = toggleButtonLeftName
+DraggableCircle.Name = draggableCircleName
+
+-- GUI Properties
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+Frame.Size = UDim2.new(0, 300, 0, 200)
+Frame.Active = true
+Frame.Draggable = true
+
+Title.Parent = Frame
+Title.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+Title.Size = UDim2.new(0, 300, 0, 30)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "Ronex"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.TextSize = 20
+
+TextBox.Parent = Frame
+TextBox.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
+TextBox.Position = UDim2.new(0, 10, 0, 40)
+TextBox.Size = UDim2.new(0, 280, 0, 100)
+TextBox.Font = Enum.Font.SourceSans
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.new(1, 1, 1)
+TextBox.TextSize = 14
+TextBox.ClearTextOnFocus = false
+
+InjectButton.Parent = Frame
+InjectButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.2)
+InjectButton.Position = UDim2.new(0, 10, 0, 150)
+InjectButton.Size = UDim2.new(0, 80, 0, 30)
+InjectButton.Font = Enum.Font.SourceSansBold
+InjectButton.Text = "Inject"
+InjectButton.TextColor3 = Color3.new(1, 1, 1)
+InjectButton.TextSize = 18
+
+ExecuteButton.Parent = Frame
+ExecuteButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.5)
+ExecuteButton.Position = UDim2.new(0, 110, 0, 150)
+ExecuteButton.Size = UDim2.new(0, 80, 0, 30)
+ExecuteButton.Font = Enum.Font.SourceSansBold
+ExecuteButton.Text = "Execute"
+ExecuteButton.TextColor3 = Color3.new(1, 1, 1)
+ExecuteButton.TextSize = 18
+
+ClearButton.Parent = Frame
+ClearButton.BackgroundColor3 = Color3.new(0.5, 0.2, 0.2)
+ClearButton.Position = UDim2.new(0, 210, 0, 150)
+ClearButton.Size = UDim2.new(0, 80, 0, 30)
+ClearButton.Font = Enum.Font.SourceSansBold
+ClearButton.Text = "Clear"
+ClearButton.TextColor3 = Color3.new(1, 1, 1)
+ClearButton.TextSize = 18
+
+-- Toggle Button
+ToggleButtonLeft.Parent = ScreenGui
+ToggleButtonLeft.BackgroundColor3 = Color3.new(0.2, 0.5, 0.5)
+ToggleButtonLeft.Size = UDim2.new(0, 50, 0, 50)
+ToggleButtonLeft.Position = UDim2.new(0, 10, 0.5, -25)
+ToggleButtonLeft.Font = Enum.Font.SourceSansBold
+ToggleButtonLeft.Text = "<"
+ToggleButtonLeft.TextColor3 = Color3.new(1, 1, 1)
+ToggleButtonLeft.TextSize = 30
+
+-- Draggable Circle
+DraggableCircle.Parent = ScreenGui
+DraggableCircle.BackgroundColor3 = Color3.new(0.8, 0.1, 0.1)
+DraggableCircle.Size = UDim2.new(0, 50, 0, 50)
+DraggableCircle.Position = UDim2.new(0, 10, 0.5, -25)
+DraggableCircle.Visible = false
+DraggableCircle.Active = true
+DraggableCircle.Draggable = true
+
+-- Functionality
+local injectedCode = ""
+local executorVisible = true
+
+InjectButton.MouseButton1Click:Connect(function()
+    injectedCode = TextBox.Text
+end)
+
+ExecuteButton.MouseButton1Click:Connect(function()
+    if injectedCode ~= "" then
+        pcall(function() loadstring(injectedCode)() end)
+    end
+end)
+
+ClearButton.MouseButton1Click:Connect(function()
+    TextBox.Text = ""
+end)
+
+ToggleButtonLeft.MouseButton1Click:Connect(function()
+    if executorVisible then
+        Frame.Visible = false
+        DraggableCircle.Visible = true
+    else
+        Frame.Visible = true
+        DraggableCircle.Visible = false
+    end
+    executorVisible = not executorVisible
+end)
+
+DraggableCircle.MouseButton1Click:Connect(function()
+    Frame.Visible = true
+    DraggableCircle.Visible = false
+end)
+
+-- PC and Mobile Compatibility
+local function adjustForDevice()
+    if game:GetService("UserInputService").TouchEnabled then
+        -- Mobile adjustments
+        Frame.Size = UDim2.new(0, 300, 0, 250)
+        TextBox.Size = UDim2.new(0, 280, 0, 150)
+        InjectButton.Position = UDim2.new(0, 10, 0, 200)
+        ExecuteButton.Position = UDim2.new(0, 110, 0, 200)
+        ClearButton.Position = UDim2.new(0, 210, 0, 200)
+        ToggleButtonLeft.Position = UDim2.new(0, 10, 0.5, -25)
+        DraggableCircle.Position = UDim2.new(0, 10, 0.5, -25)
+    else
+        -- PC adjustments
+        Frame.Size = UDim2.new(0, 350, 0, 250)
+        TextBox.Size = UDim2.new(0, 320, 0, 150)
+        InjectButton.Position = UDim2.new(0, 10, 0, 200)
+        ExecuteButton.Position = UDim2.new(0, 130, 0, 200)
+        ClearButton.Position = UDim2.new(0, 250, 0, 200)
+        ToggleButtonLeft.Position = UDim2.new(0, 10, 0.5, -25)
+        DraggableCircle.Position = UDim2.new(0, 10, 0.5, -25)
+    end
+end
+
+adjustForDevice()
